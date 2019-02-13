@@ -1,0 +1,8 @@
+spring:
+  data.mongodb:
+#    host: ds127995.mlab.com
+#    port: 27995
+    uri: mongodb://reporter:report10@ds127995.mlab.com:27995/report
+#    database: report
+#    username: reporter
+#    password: report10
