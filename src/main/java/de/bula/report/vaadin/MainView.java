@@ -1,21 +1,24 @@
 package de.bula.report.vaadin;
 
+import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.page.BodySize;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 import de.bula.report.pattern.Pattern;
 import de.bula.report.persisitence.PatternRepository;
+import de.bula.report.vaadin.layout.LayoutWithMenuBar;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 
-@Route
-public class MainView extends VerticalLayout {
+@Route(value = "", layout = LayoutWithMenuBar.class, absolute = false)
+public class MainView extends Composite<Div> {
 
     private final PatternRepository repo;
 
@@ -34,14 +37,18 @@ public class MainView extends VerticalLayout {
         this.filter = new TextField();
         this.addNewBtn = new Button("New pattern", VaadinIcon.PLUS.create());
 
+//        VerticalLayout verticalLayout = new VerticalLayout();
+//        getContent().add(verticalLayout);
+
         // build layout
         HorizontalLayout actions = new HorizontalLayout(filter, addNewBtn);
-        add(actions, grid, editor);
+        actions.setFlexGrow(0);
+        getContent().add(actions, grid, editor);
 
         grid.setHeight("300px");
         grid.setColumns(/*"id",*/ "name", "headers");
-//        grid.getColumnByKey("id").setWidth("100px").setFlexGrow(0);
 
+        grid.setWidth("1800px");
         filter.setPlaceholder("Filter by name");
 
         // Hook logic to components
@@ -72,8 +79,7 @@ public class MainView extends VerticalLayout {
     void listPatterns(String filterText) {
         if (StringUtils.isEmpty(filterText)) {
             grid.setItems(repo.findAll());
-        }
-        else {
+        } else {
             grid.setItems(repo.findAllByNameStartsWith(filterText));
         }
     }

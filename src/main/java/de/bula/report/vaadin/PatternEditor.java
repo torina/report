@@ -9,7 +9,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
-import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import de.bula.report.pattern.Pattern;
@@ -37,14 +36,15 @@ public class PatternEditor extends VerticalLayout implements KeyNotifier {
 
     /* Fields to edit properties in Customer entity */
     TextField name = new TextField("Name");
-//    TextArea headers = new TextArea("Tables");
+    TextArea headers = new TextArea("Table Headers");
 
     /* Action buttons */
     // TODO why more code?
     Button save = new Button("Save", VaadinIcon.CHECK.create());
-    Button cancel = new Button("Cancel");
+    Button reset = new Button("Reset");
+    Button cancel = new Button("Cancel", VaadinIcon.BAN.create());
     Button delete = new Button("Delete", VaadinIcon.TRASH.create());
-    HorizontalLayout actions = new HorizontalLayout(save, cancel, delete);
+    HorizontalLayout actions = new HorizontalLayout(save, reset, cancel, delete);
 
     Binder<Pattern> binder = new Binder<>(Pattern.class);
     private ChangeHandler changeHandler;
@@ -53,19 +53,16 @@ public class PatternEditor extends VerticalLayout implements KeyNotifier {
     public PatternEditor(PatternRepository repository) {
         this.repository = repository;
 
-        add(name, actions);
+        add(name, headers, actions);
 
         // bind using naming convention
-         binder.bindInstanceFields(this);
+//        binder.bindInstanceFields(this);
 
-//        binder.forField(name)
-//                // Finalize by doing the actual binding to the Person class
-//                .bind(
-//                        // Callback that loads the title from a person instance
-//                        Pattern::getName,
-//                        // Callback that saves the title in a person instance
-//                        Pattern::setName);
+        binder.forField(headers)
+                .withConverter(new TableHeaderConverter())
+                .bind(Pattern::getHeaders, Pattern::setHeaders);
 
+        binder.bindInstanceFields(this);
 
         // Configure and style components
         setSpacing(true);
@@ -78,16 +75,22 @@ public class PatternEditor extends VerticalLayout implements KeyNotifier {
         // wire action buttons to savePattern, deletePattern and reset
         save.addClickListener(e -> savePattern());
         delete.addClickListener(e -> deletePattern());
-        cancel.addClickListener(e -> editPattern(pattern));
+        reset.addClickListener(e -> editPattern(pattern));
+        cancel.addClickListener(e -> closeEditor());
         setVisible(false);
     }
 
-    void deletePattern() {
+    private void closeEditor() {
+        binder.removeBean();
+        changeHandler.onChange();
+    }
+
+    private void deletePattern() {
         repository.delete(pattern);
         changeHandler.onChange();
     }
 
-    void savePattern() {
+    private void savePattern() {
         repository.save(pattern);
         changeHandler.onChange();
     }
@@ -108,7 +111,7 @@ public class PatternEditor extends VerticalLayout implements KeyNotifier {
         } else {
             pattern = c;
         }
-        cancel.setVisible(persisted);
+        reset.setVisible(persisted);
 
         // Bind pattern properties to similarly named fields
         // Could also use annotation or "manual binding" or programmatically

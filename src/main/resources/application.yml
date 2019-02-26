@@ -6,3 +6,6 @@ spring:
 #    database: report
 #    username: reporter
 #    password: report10
+  servlet:
+    multipart:
+      enabled: false

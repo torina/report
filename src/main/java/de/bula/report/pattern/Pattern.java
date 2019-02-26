@@ -24,9 +24,5 @@ public class Pattern {
      */
     @Getter
     @Setter
-    List<String> headers;
-
-    public Pattern(String name) {
-        this.name = name;
-    }
+    List<TableHeader> headers;
 }
