@@ -1,4 +1,4 @@
-package de.bula.report.persisitence;
+package de.bula.report.persistance;
 
 import de.bula.report.pattern.Pattern;
 import org.springframework.data.mongodb.repository.MongoRepository;

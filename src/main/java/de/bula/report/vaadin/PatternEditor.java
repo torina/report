@@ -12,7 +12,7 @@ import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import com.vaadin.flow.spring.annotation.UIScope;
 import de.bula.report.pattern.Pattern;
-import de.bula.report.persisitence.PatternRepository;
+import de.bula.report.persistance.PatternRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

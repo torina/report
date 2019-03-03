@@ -1,7 +1,7 @@
 package de.bula.report;
 
 import de.bula.report.pattern.Pattern;
-import de.bula.report.persisitence.PatternRepository;
+import de.bula.report.persistance.PatternRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @org.springframework.stereotype.Service

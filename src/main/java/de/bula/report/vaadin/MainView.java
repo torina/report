@@ -6,12 +6,11 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.page.BodySize;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 import de.bula.report.pattern.Pattern;
-import de.bula.report.persisitence.PatternRepository;
+import de.bula.report.persistance.PatternRepository;
 import de.bula.report.vaadin.layout.LayoutWithMenuBar;
 import org.springframework.util.StringUtils;
 
